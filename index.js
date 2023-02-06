@@ -15,6 +15,6 @@ db.once('open', () => {
     });
 });
 
-// create models. Reaction.js is a sub-model of Thought.js
-// create controllers
-// finish api
+// [.] create models. Reaction.js is a sub-model of Thought.js
+// [ ] create controllers
+// [ ] finish api
