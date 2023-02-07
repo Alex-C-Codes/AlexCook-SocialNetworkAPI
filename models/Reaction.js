@@ -17,8 +17,13 @@ const reactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now,
-            // USE A GETTER METHOD TO FORMAT TIMESTAMP ON QUERY
+            get: (date) => { if (date) return date.toISOString().split("T") [0] }
+        }
+    },
+    {
+        toJSON: {
+            getters: true,
+            virtuals: true
         }
     }
 );

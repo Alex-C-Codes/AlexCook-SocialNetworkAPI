@@ -1,4 +1,5 @@
 // const { ObjectId } = require('mongoose').Types;
+const { reset } = require('nodemon');
 const { User, Thought } = require('../models');
 
 module.exports = {
@@ -63,7 +64,7 @@ module.exports = {
         console.log(req.body);
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { response: req.body } },
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
         )
             .then((thought) =>
@@ -77,11 +78,20 @@ module.exports = {
     },
     // deletes a reaction from a user's thought
     deleteReaction(req, res) {
-        Thought.findOneAndDelete({ _id: req.params.thoughtId })
-            .then((course) =>
-            !course
-                ? res.status(404).json({ message: 'No reeaction with that ID' })
-                : Thought.deleteOne({ _id: { $in: course.sstudents } })
+        // console.log(req.params.thoughtId);
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            // { $pull: { reactions: { reactionId: req.params.reactionId } } },
+            { $pull: { reactions: req.body } },
+            { runValidators: true, new: true }
+        )
+            .then((thought) =>
+            !thought
+                ? res
+                    .status(404)
+                    .json({ message: 'No reaction with that ID' })
+                : Thought.deleteOne({ _id: { $in: thought.reactions } })
+                // : res.json(thought)
             )
             .then(() => res.json({ message: 'Reaction deleted' }))
             .catch((err) => res.status(500).json(err));

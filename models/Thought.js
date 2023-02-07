@@ -11,8 +11,8 @@ const thoughtSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now,
-            // USE A GETTER METHOD TO FORMAT TIMESTAMP ON QUERY
+            // default: Date.now,
+            get: (date) => { if (date) return date.toISOString().split("T") [0] }
         },
         username: {
             type: String,
@@ -22,7 +22,8 @@ const thoughtSchema = new Schema(
     },
     {
         toJSON: {
-            getters: true
+            getters: true,
+            virtuals: true
         }
     }
 );

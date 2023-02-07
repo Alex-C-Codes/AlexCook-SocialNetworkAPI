@@ -14,7 +14,3 @@ db.once('open', () => {
         console.log(`API server running on port ${PORT}`);
     });
 });
-
-// [.] create models. Reaction.js is a sub-model of Thought.js
-// [ ] create controllers
-// [ ] finish api
