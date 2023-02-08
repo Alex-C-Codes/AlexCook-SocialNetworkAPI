@@ -78,10 +78,8 @@ module.exports = {
     },
     // deletes a reaction from a user's thought
     deleteReaction(req, res) {
-        // console.log(req.params.thoughtId);
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            // { $pull: { reactions: { reactionId: req.params.reactionId } } },
             { $pull: { reactions: req.body } },
             { runValidators: true, new: true }
         )
@@ -91,7 +89,6 @@ module.exports = {
                     .status(404)
                     .json({ message: 'No reaction with that ID' })
                 : Thought.deleteOne({ _id: { $in: thought.reactions } })
-                // : res.json(thought)
             )
             .then(() => res.json({ message: 'Reaction deleted' }))
             .catch((err) => res.status(500).json(err));
